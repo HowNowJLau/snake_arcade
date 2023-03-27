@@ -16,4 +16,14 @@ public class ArcadeController {
 	public String snake() {
 		return "/game/snake.jsp";
 	}
+	
+	@GetMapping("/tetris")
+	public String tetris() {
+		return "/game/tetris.jsp";
+	}
+	
+	@GetMapping("/tictactoe")
+	public String tictactoe() {
+		return "/game/tictactoe.jsp";
+	}
 }

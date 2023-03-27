@@ -1,86 +1,123 @@
-let canvas = document.querySelector("#game");
-let para = document.querySelector("#para");
-console.log(canvas);
-console.log(para);
-//const ctx = canvas.getContext('2d');
-document.body.addEventListener('keydown', keyDown);
+"use strict";
 
-let tileCount=20;
-let tileSize=18;
-let headX=10;
-let headY=10;
-let xvelocity=0;
-let yvelocity=0;
-let appleX=5;
-let appleY=5;
+// BOARD
+const blockSize = 15;
+const rows = 33;
+const cols = 70;
+let board, context;
 
-/*const drawGame = () => {
-    clearScreen();
-    let speed=7;//The interval will be seven times a second.
-    setTimeout(drawGame, 1000/speed);//update screen 7 times a second
-    drawSnake();
-    changeSnakePosition();
-    drawApple();
-}
+// SNAKE
+let snakeX = blockSize * 5;
+let snakeY = blockSize * 5;
 
-const clearScreen = () => {
-	ctx.fillStyle= 'black';
-	ctx.fillRect(0,0,canvas.clientWidth,canvas.clientHeight)
-}
+let velocitX = 0,
+  velocitY = 0;
 
-const drawSnake = () => {
-	ctx.fillStyle="orange";
-    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
-}
+let snakeBody = [];
 
-const keyDown = (event) => {
-	//up
-    if(event.keyCode==38){
-		if (yvelocity == 1) {
-			return;
-		}
-        yvelocity=-1; //move one tile up
-        xvelocity=0;
+// FOOD
+let foodX, foodY;
 
+let gameOver = false;
+
+window.onload = () => {
+  board = document.querySelector(".board");
+  board.height = rows * blockSize;
+  board.width = cols * blockSize;
+  context = board.getContext("2d"); // use for drowing on the board
+
+  placeFood();
+  document.addEventListener("keyup", changeDirection);
+  setInterval(update, 100);
+};
+
+const GameOver = () => {
+  gameOverP.classList.remove("hidden");
+  gameOver = true;
+};
+
+const update = () => {
+  if (gameOver) {
+    return;
+  }
+  const score = document.querySelector(".score");
+
+  context.fillStyle = "#1b2d4d";
+  context.fillRect(0, 0, board.width, board.height);
+
+  context.fillStyle = "#F8F8F8";
+  context.fillRect(foodX, foodY, blockSize, blockSize);
+
+  if (snakeX === foodX && snakeY === foodY) {
+    snakeBody.push([foodX, foodY]);
+    score.textContent = Number(++score.textContent);
+    placeFood();
+  }
+
+  for (let i = snakeBody.length - 1; i > 0; i--) {
+    snakeBody[i] = snakeBody[i - 1];
+  }
+  if (snakeBody.length) snakeBody[0] = [snakeX, snakeY];
+
+  context.fillStyle = "#F037A5";
+  snakeX += velocitX * blockSize;
+  snakeY += velocitY * blockSize;
+  context.fillRect(snakeX, snakeY, blockSize, blockSize);
+  for (let i = 0; i < snakeBody.length; i++) {
+    context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+  }
+  // GAME OVER
+  const gameOverP = document.querySelector(".game-over");
+
+  if (
+    snakeX < 0 ||
+    snakeX > cols * blockSize ||
+    snakeY < 0 ||
+    snakeY > rows * blockSize
+  ) {
+    // GameOver()
+    gameOverP.classList.remove("hidden");
+    gameOver = true;
+  }
+  snakeBody.forEach((el) => {
+    if (snakeX === el[0] && snakeY === el[1]) {
+      //    GameOver()
+      gameOverP.classList.remove("hidden");
+      gameOver = true;
     }
-    //down
-    if(event.keyCode==40){
-		if (yvelocity == -1) {
-			return;
-		}
-        yvelocity=1;//move one tile down
-        xvelocity=0;
-    }
+  });
+};
 
-	//left
-    if(event.keyCode==37){
-		if (xvelocity == 1) {
-			return;
-		}
-        yvelocity=0;
-        xvelocity=-1;//move one tile left
-    }
-    //right
-    if(event.keyCode==39){
-		if (xvelocity == -1) {
-			return;
-		}
-        yvelocity=0;
-        xvelocity=1;//move one tile right
-    }
-}
+const changeDirection = (e) => {
+  if (e.code === "ArrowUp" && velocitY != 1) {
+    velocitX = 0;
+    velocitY = -1;
+  } else if (e.code === "ArrowDown" && velocitY != -1) {
+    velocitX = 0;
+    velocitY = 1;
+  } else if (e.code === "ArrowLeft" && velocitX != 1) {
+    velocitX = -1;
+    velocitY = 0;
+  } else if (e.code === "ArrowRight" && velocitX != -1) {
+    velocitX = 1;
+    velocitY = 0;
+  }
+  const restBtn = document.querySelector(".rest-btn");
+  const gameOverP = document.querySelector(".game-over");
 
-const changeSnakePosition = () => {
-     headX=headX + xvelocity;
-     headY=headY+ yvelocity;
+  restBtn.addEventListener("click", () => {
+    gameOverP.classList.add("hidden");
+    velocitX = 0;
+    velocitY = 0;
+    snakeX = blockSize * 5;
+    snakeY = blockSize * 5;
+    snakeBody = [];
+    gameOver = false;
+    placeFood();
+  });
+};
 
-}
- 
-const drawApple = () => {
-     ctx.fillStyle="red";// make apple red
-     ctx.fillRect(appleX*tileCount, appleY*tileCount, tileSize, tileSize)//position apple within tile count
- }
- 
-drawGame();*/
-
-
+const placeFood = () => {
+  foodX = Math.floor(Math.random() * cols) * blockSize;
+  foodY = Math.floor(Math.random() * rows) * blockSize;
+};
