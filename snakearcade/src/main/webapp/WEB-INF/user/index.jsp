@@ -9,8 +9,8 @@
 <title>Snake Arcade</title>
 </head>
 <body>
-    <div class="container">
-    	<h1 style="color:rebeccapurple" class="fw-bold">Snake Arcade</h1>
+    <div class="container mt-5">
+    	<h1 style="color:rebeccapurple" class="fw-bold">Snake Arcade</h1> <br>
         <div class="row">
             <div class="col">
                 <h1>Register</h1>
@@ -29,7 +29,7 @@
                         <label>Confirm Password</label>
                         <form:input path="passwordConfirm" class="form-control" type="password"/>
                         <form:errors path="passwordConfirm" class="text-danger" />
-                    </div>
+                    </div> <br>
                     <input type="submit" value="Register User" class="btn btn-primary" />
                 </form:form>
             </div>
@@ -45,7 +45,7 @@
                         <label>Password</label>
                         <form:input path="password" class="form-control" type="password"/>
                         <form:errors path="password" class="text-danger" />
-                    </div>
+                    </div><br>
                     <input type="submit" value="Login" class="btn btn-primary" />
                 </form:form>
             </div>
