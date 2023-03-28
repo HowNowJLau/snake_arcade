@@ -1,5 +1,7 @@
 package com.project.snakearcade.controllers;
 
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +29,5 @@ public class ArcadeController {
 		return "/game/tictactoe.jsp";
 	}
 	
-	@GetMapping("/rewards")
-	public String rewards() {
-		return "/main/rewards.jsp";
-	}
+	
 }

@@ -18,11 +18,16 @@ body {
   margin-left: 10px;
 }
 
-#image {
-  display: inline-block;
+img {
   width: 100px; /* adjust the width as per your image size */
   height: 100px; /* adjust the height as per your image size */
   background-image: url('your_image_path.jpg'); /* replace with your image path */
   background-size: cover;
   background-position: center center;
 }
+
+.one-reward {
+	text-align: center;
+	width: 20%;
+}
+
