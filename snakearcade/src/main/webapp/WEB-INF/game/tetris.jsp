@@ -1,34 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Snake Arcade</title>
+<title>Tetris Game</title>
 <link rel="stylesheet" type="text/css" href="/css/tetris.css">
-<script type="text/javascript" src="/js/tetris.js"></script>
+
 </head>
-<a href="/arcade">Back Home</a> <br>
-<body onload="draw()">
-  <h1>tetris</h1>
-    <p id="score">score: 0</p>
-    <div id="container">
-        <canvas id="console"></canvas>
-        <p id="skeletonConsole"></p>
-    </div>
-    <div id="start_stop">
-        <button id="startbtn" onclick="start()">start</button>
-        <button id="stopbtn" onclick="stop()">stop</button>
-    </div>
-    <div id="controls">
-        <div class="control_row">
-            <button id="rotatebtn" class="controlbtn">&#8631</button>
-        </div>
-        <div class="control_row">
-            <button id="leftbtn" class="controlbtn">&#8592</button>
-            <button id="downbtn" class="controlbtn">&#8595</button>
-            <button id="rightbtn" class="controlbtn">&#8594</button>
-        </div>
-    </div>
+<body>
+<br>
+<div> <a href="/arcade">Back Home</a> </div>
+<h1>Tetris</h1>
+<div id="score">Score:</div> <br>
+<canvas id="canvas" width="228" height="380"></canvas>
+<canvas id="hold" width="76" height="76"></canvas>
+<p>Instructions: Use the Left and Right Arrows to move left and right. You can press the Down Arrow to "Soft Drop". The Up Arrow and Q will rotate right. CTRL and E will rotate left. (Not simultaneously for rotation) You can press Space for a "Hard Drop". Press Shift to swap HOLD. Fill up 150 Lines to win.</p>
+<script type="text/javascript" src="/js/tetris.js"></script>
 </body>
 </html>
