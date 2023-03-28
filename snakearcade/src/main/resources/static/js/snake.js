@@ -58,7 +58,7 @@ const GameOver = async () => {
 	const data2 = await res2.json();
 	console.log(data2);
   } catch (error) {
-	console.log(error);
+	console.log(error.message);
   }
   playerScore = 0;
 };

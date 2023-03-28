@@ -35,7 +35,7 @@ public class User {
 	private String password;
 	
 	@Transient
-	@NotEmpty(message="Confirm password")
+	//@NotEmpty(message="Confirm password")
 	private String passwordConfirm;
 	
 	private Integer tickets;

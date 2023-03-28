@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Snake Arcade</title>
 <link rel="stylesheet" type="text/css" href="/css/snake.css">
-<script type="text/javascript" src="/js/snake.js"></script>
+
 </head>
 <body>
 <a href="/arcade">Back Home</a>  
@@ -20,6 +20,6 @@
   <h2> Score: <span class="score">0</span></h2>
   <button class="reset-btn">Restart</button>
 </div>
-
 </body>
+<script type="text/javascript" src="/js/snake.js"></script>
 </html>
