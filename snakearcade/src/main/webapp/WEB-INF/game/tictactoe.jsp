@@ -5,11 +5,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-tac-toe</title>
+    <title>Tic-tac-toe Game</title>
 <link rel="stylesheet" type="text/css" href="/css/tictactoe.css">
 <script type="text/javascript" src="/js/tictactoe.js"></script>
 </head>
 <body>
+<br>
 <a href="/arcade">Back Home</a> <br>
   <body onload="initialize()">
     <h1>Tic-Tac-Toe</h1>
