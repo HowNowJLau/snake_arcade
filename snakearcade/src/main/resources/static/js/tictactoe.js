@@ -630,14 +630,41 @@ function closeModal(id) {
     document.getElementById(id).style.display = "none";
 }
 
-function endGame(who) {
+async function endGame(who) {
+	let ticketsToReward;
     if (who == player) {
         announceWinner("Congratulations, you won!");
+        ticketsToReward = 3;
     } else if (who == computer) {
         announceWinner("Computer wins!");
+        ticketsToReward = 0;
     } else {
         announceWinner("It's a tie!");
+        ticketsToReward = 1;
     }
+    try {
+	let userId = document.querySelector(".user_id").value;
+    const res = await fetch("http://localhost:8080/api/users/" + userId);
+    const data = await res.json();
+    const updateUser = {
+	  ...data,
+	  tickets: data.tickets + ticketsToReward
+	}
+	console.log(updateUser);
+	const updateData = {
+	  method: "PUT",
+	  headers:{
+		"Content-Type": "application/json",
+		"Accept": "application/json"
+	  },
+	  body:JSON.stringify(updateUser)
+	}
+	const res2 = await fetch("http://localhost:8080/api/users/" + userId, updateData);
+	const data2 = await res2.json();
+	console.log(data2);
+  } catch (error) {
+	console.log(error.message);
+  }
     gameOver = true;
     whoseTurn = 0;
     moves = 0;

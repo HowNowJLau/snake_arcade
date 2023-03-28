@@ -10,6 +10,7 @@
 <script type="text/javascript" src="/js/tictactoe.js"></script>
 </head>
 <body>
+<input type="hidden" value="${user_id}" class="user_id"/>
 <br>
 <a href="/arcade">Back Home</a> <br>
   <body onload="initialize()">

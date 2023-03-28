@@ -255,7 +255,7 @@ function rot(matrix, dir) {
 }
 
 // Changing Pieces
-function playerReset() {
+async function playerReset() {
   player.matrix = createPiece(pieces[pieces.length * Math.random() | 0])
   player.pos.y = 0
   player.pos.x = (arena[0].length / 2 | 0) -
@@ -263,6 +263,29 @@ function playerReset() {
   if (collide(arena, player)) {
     arena.forEach(row => row.fill(0))
     alert(`Game Over. Final score: ${player.score} Lines Cleared: ${cleared}/${winReq}`);
+    try {
+	userId = document.querySelector(".user_id").value;
+    const res = await fetch("http://localhost:8080/api/users/" + userId);
+    const data = await res.json();
+    const updateUser = {
+	  ...data,
+	  tickets: data.tickets + player.score
+	}
+	console.log(updateUser);
+	const updateData = {
+	  method: "PUT",
+	  headers:{
+		"Content-Type": "application/json",
+		"Accept": "application/json"
+	  },
+	  body:JSON.stringify(updateUser)
+	}
+	const res2 = await fetch("http://localhost:8080/api/users/" + userId, updateData);
+	const data2 = await res2.json();
+	console.log(data2);
+  } catch (error) {
+	console.log(error.message);
+  }
     player.score = 0
     scoreSmallMod = 0
     cleared = 0

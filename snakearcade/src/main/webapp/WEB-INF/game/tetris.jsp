@@ -10,6 +10,7 @@
 <br>
 <div> <a href="/arcade">Back Home</a> </div>
 <h1>Tetris</h1>
+<input type="hidden" value="${user_id}" class="user_id"/>
 <div id="score">Score:</div> <br>
 <canvas id="canvas" width="228" height="380"></canvas>
 <canvas id="hold" width="76" height="76"></canvas>
