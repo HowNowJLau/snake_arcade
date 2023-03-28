@@ -27,4 +27,8 @@ public class ArcadeController {
 		return "/game/tictactoe.jsp";
 	}
 	
+	@GetMapping("/rewards")
+	public String rewards() {
+		return "/main/rewards.jsp";
+	}
 }

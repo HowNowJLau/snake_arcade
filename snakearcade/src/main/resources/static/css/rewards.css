@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+body {
+    background-color:  #cad6f1;
+    text-align: center;
+    font-size: 1.2em;
+    font-family: Comic Sans MS, cursive, sans-serif;
+}
+
+.rewards-container {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+#tickets, #image {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#image {
+  display: inline-block;
+  width: 100px; /* adjust the width as per your image size */
+  height: 100px; /* adjust the height as per your image size */
+  background-image: url('your_image_path.jpg'); /* replace with your image path */
+  background-size: cover;
+  background-position: center center;
+}
