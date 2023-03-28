@@ -28,6 +28,8 @@ public class Reward {
 	@NotEmpty(message="Name required")
 	private String name;
 	
+	private Boolean isEnabled;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
@@ -68,6 +70,14 @@ public class Reward {
 		this.user = user;
 	}
 
+	public Boolean getIsEnabled() {
+		return isEnabled;
+	}
+
+	public void setIsEnabled(Boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -78,6 +88,7 @@ public class Reward {
 
 	@PrePersist
 	protected void onCreate() {
+		this.isEnabled = false;
 		this.createdAt = new Date();
 	}
 	@PreUpdate

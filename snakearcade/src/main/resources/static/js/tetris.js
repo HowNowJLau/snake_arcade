@@ -34,13 +34,18 @@ let currentBlockType = blockType[Math.floor(Math.random()*5)];
 let currentBlockProps;
 let or = 0;
 
+// let ctx, skeletonGrid;
 // Console properties
-const consoleGrid = document.querySelector("#console");
-const ctx = consoleGrid.getContext("2d");
-consoleGrid.height = grid_height*blockSize;
-consoleGrid.width = grid_width*blockSize;
+// window.onload = () => {
+	const consoleGrid = document.querySelector("#console");
+	console.log(consoleGrid);
+	const ctx = consoleGrid.getContext("2d");
+	consoleGrid.height = grid_height*blockSize;
+	consoleGrid.width = grid_width*blockSize;
 
-const skeletonGrid = document.querySelector('#skeletonConsole');
+	const skeletonGrid = document.querySelector('#skeletonConsole');
+// }
+
 
 // Score
 let score = 0;

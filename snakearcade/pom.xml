@@ -76,11 +76,7 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-        <dependency>
-  			<groupId>org.webjars.npm</groupId>
-  			<artifactId>tailwindcss</artifactId>
-  			<version>2.2.15</version>
-		</dependency>
+        
 
 	</dependencies>
 

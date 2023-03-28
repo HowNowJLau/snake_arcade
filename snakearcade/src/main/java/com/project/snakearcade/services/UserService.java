@@ -34,6 +34,10 @@ public class UserService {
 		return optionalUser.isPresent() ? optionalUser.get() : null;
 	}
 	
+	public User update(User user) {
+		return userRepo.save(user);
+	}
+	
 	public User register(User newUser, BindingResult result) {
 	    
     	// TO-DO - Reject values or register if no errors:

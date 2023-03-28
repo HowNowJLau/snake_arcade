@@ -4,7 +4,8 @@
 const blockSize = 15;
 const rows = 33;
 const cols = 70;
-let board, context;
+let board, context, userId;
+let playerScore = 0;
 
 // SNAKE
 let snakeX = blockSize * 5;
@@ -21,25 +22,52 @@ let foodX, foodY;
 let gameOver = false;
 
 window.onload = () => {
+  console.log(document.querySelector(".user_id"));
+  userId = document.querySelector(".user_id").value;
   board = document.querySelector(".board");
   board.height = rows * blockSize;
   board.width = cols * blockSize;
-  context = board.getContext("2d"); // use for drowing on the board
+  context = board.getContext("2d"); // use for drawing on the board
 
   placeFood();
   document.addEventListener("keyup", changeDirection);
   setInterval(update, 100);
 };
 
-const GameOver = () => {
+const GameOver = async () => {
+  let gameOverP = document.querySelector(".game-over");
   gameOverP.classList.remove("hidden");
   gameOver = true;
+  try {
+    const res = await fetch("http://localhost:8080/api/users/" + userId);
+    const data = await res.json();
+    const updateUser = {
+	  ...data,
+	  tickets: data.tickets + playerScore
+	}
+	console.log(updateUser);
+	const updateData = {
+	  method: "PUT",
+	  headers:{
+		"Content-Type": "application/json",
+		"Accept": "application/json"
+	  },
+	  body:JSON.stringify(updateUser)
+	}
+	const res2 = await fetch("http://localhost:8080/api/users/" + userId, updateData);
+	const data2 = await res2.json();
+	console.log(data2);
+  } catch (error) {
+	console.log(error);
+  }
+  playerScore = 0;
 };
 
-const update = () => {
+const update = async () => {
   if (gameOver) {
     return;
   }
+    
   const score = document.querySelector(".score");
 
   context.fillStyle = "#1b2d4d";
@@ -50,7 +78,8 @@ const update = () => {
 
   if (snakeX === foodX && snakeY === foodY) {
     snakeBody.push([foodX, foodY]);
-    score.textContent = Number(++score.textContent);
+    playerScore++;
+    score.textContent = playerScore;
     placeFood();
   }
 
@@ -66,8 +95,7 @@ const update = () => {
   for (let i = 0; i < snakeBody.length; i++) {
     context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
   }
-  // GAME OVER
-  const gameOverP = document.querySelector(".game-over");
+  
 
   if (
     snakeX < 0 ||
@@ -75,15 +103,11 @@ const update = () => {
     snakeY < 0 ||
     snakeY > rows * blockSize
   ) {
-    // GameOver()
-    gameOverP.classList.remove("hidden");
-    gameOver = true;
+    GameOver();
   }
   snakeBody.forEach((el) => {
     if (snakeX === el[0] && snakeY === el[1]) {
-      //    GameOver()
-      gameOverP.classList.remove("hidden");
-      gameOver = true;
+      GameOver();
     }
   });
 };
@@ -102,10 +126,10 @@ const changeDirection = (e) => {
     velocitX = 1;
     velocitY = 0;
   }
-  const restBtn = document.querySelector(".rest-btn");
+  const resetBtn = document.querySelector(".reset-btn");
   const gameOverP = document.querySelector(".game-over");
 
-  restBtn.addEventListener("click", () => {
+  resetBtn.addEventListener("click", () => {
     gameOverP.classList.add("hidden");
     velocitX = 0;
     velocitY = 0;
@@ -113,6 +137,8 @@ const changeDirection = (e) => {
     snakeY = blockSize * 5;
     snakeBody = [];
     gameOver = false;
+    const score = document.querySelector(".score");
+    score.textContent = 0;
     placeFood();
   });
 };
