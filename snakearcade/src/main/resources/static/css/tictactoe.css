@@ -2,11 +2,13 @@
 
 body {
     background-color: rgb(32, 32, 32);
-    background-image: url("https://janschreiber.github.io/img2/black-chalk.jpg");
     color: rgb(230, 230, 230);
     text-align: center;
-    font-family: 'Indie Flower', 'Comic Sans', cursive;
-    font-size: 0.7em;
+    font-family: Comic Sans MS, cursive, sans-serif;
+    font-size: 1.0em;
+}
+a {
+	color: darksalmon;
 }
 h1 {
     line-height: 1em;

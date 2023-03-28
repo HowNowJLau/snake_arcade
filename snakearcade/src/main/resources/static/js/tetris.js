@@ -1,410 +1,335 @@
-'use strict';
+// Access the canvases
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+const hcanvas = document.getElementById("hold");
+const hcon = hcanvas.getContext("2d");
+// Make everything we draw visible by scaling 20x
+context.scale(19, 19)
+hcon.scale(19, 19)
 
-// Skeletion previous_grid properties
-const clear_grid = [
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0]
-]
-let previous_grid = structuredClone(clear_grid);
-let current_grid = structuredClone(previous_grid);
-let grid_width = previous_grid[0].length
-let grid_height = previous_grid.length
+// Game Modifiers
+let cleared = 0
+let winReq = 150
+let constantScoreMult = 3
+let scoreSmallMod = 25
+let smallModIncrease = 5
 
-// Mechanics basics
-let advanceInterval;
-let drawInterval;
-let x=Math.floor(grid_width/2);
-let y=0;
+// Create Hold
+const pieces = "ILJOTSZ"
+let hold = createPiece(pieces[pieces.length * Math.random() | 0]);
 
-// Block properties
-const blockSize = 20;
-const blockType = ["straight","square","skew","T","L"];
-let currentBlockType = blockType[Math.floor(Math.random()*5)];
-let currentBlockProps;
-let or = 0;
+// Pieces
+function createPiece(type) {
+  if (type === 'T') {
+    return [
+      [0, 0, 0],
+      [1, 1, 1],
+      [0, 1, 0],  
+];
+  } else if (type === 'O') {
+    return [
+      [2, 2],
+      [2, 2]
+    ];
+  } else if (type === 'L') {
+    return [
+      [0, 3, 0],
+      [0, 3, 0],
+      [0, 3, 3]
+    ];
+  } else if (type === 'J') {
+    return [
+      [0, 4, 0],
+      [0, 4, 0],
+      [4, 4, 0]
+    ];
+  } else if (type === 'I') {
+    return [
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0]
+    ];
+  } else if (type === 'Z') {
+    return [
+      [0, 0, 0],
+      [6, 6, 0],
+      [0, 6, 6]
+    ];
+  } else if (type === "S") {
+    return [
+      [0, 0, 0],
+      [0, 7, 7],
+      [7, 7, 0]
+    ];
+  };
+};
 
-// Console properties
-const consoleGrid = document.querySelector("#console");
-const ctx = consoleGrid.getContext("2d");
-consoleGrid.height = grid_height*blockSize;
-consoleGrid.width = grid_width*blockSize;
-
-const skeletonGrid = document.querySelector('#skeletonConsole');
-
-// Score
-let score = 0;
-const scoreLabel = document.querySelector("#score");
-
-// Buttons
-const startButton = document.querySelector("#startbtn");
-const stopButton = document.querySelector("#stopbtn");
-const rotateButton = document.querySelector("#rotatebtn");
-const leftButton = document.querySelector("#leftbtn");
-const downButton = document.querySelector("#downbtn");
-const rightButton = document.querySelector("#rightbtn");
-
-function buildStraight(y,x,or) {
-    let straightCoords;
-    let colour = 1;
-
-    if (or === 2) {
-        or = 0;
-    } else if (or === 3) {
-        or = 1;
-    }
-
-    switch (or) {
-        case 0:
-            straightCoords = [[y,x],[y+1,x],[y+2,x],[y+3,x]];
-            break;
-        case 1:
-            straightCoords = [[y,x-2],[y,x-1],[y,x],[y,x+1]];
-            break;
-    }
-    return [straightCoords, colour];
-}
-
-function buildSquare(y,x) {
-    let colour = 2;
-    return [[[y,x],[y,x+1],[y+1,x],[y+1,x+1]], colour]
-}
-
-function buildSkew(y,x,or) {
-    let skewCoords;
-    let colour = 3;
-
-    if (or === 2) {
-        or = 0;
-    } else if (or === 3) {
-        or = 1;
-    }
-
-    switch (or) {
-        case 0:
-            skewCoords = [[y,x],[y,x+1],[y+1,x-1],[y+1,x]];
-            break;
-        case 1:
-            skewCoords = [[y,x],[y+1,x],[y+1,x+1],[y+2,x+1]];
-            break;
-    }
-
-    return [skewCoords, colour];
-}
-
-function buildT(y,x,or) {
-    let Tcoords;
-    let colour = 4;
-    switch (or) {
-        case 0:
-            Tcoords =  [[y,x],[y+1,x-1],[y+1,x],[y+1,x+1]];
-            break;
-        case 1:
-            Tcoords = [[y,x],[y+1,x],[y+1,x+1],[y+2,x]];
-            break;
-        case 2:
-            Tcoords = [[y,x-1],[y,x],[y,x+1],[y+1,x]];
-            break;
-        case 3:
-            Tcoords =  [[y,x],[y+1,x-1],[y+1,x],[y+2,x]];
-            break;
-    }
-
-    return [Tcoords, colour];
-}
-
-function buildL(y,x,or) {
-    let Lcoords;
-    let colour = 5;
-    switch (or) {
-        case 0:
-            Lcoords = [[y,x],[y+1,x],[y+2,x],[y+2,x+1]];
-            break;
-        case 1:
-            Lcoords = [[y,x-1],[y,x],[y,x+1],[y+1,x-1]];
-            break;
-        case 2:
-            Lcoords = [[y,x],[y,x+1],[y+1,x+1],[y+2,x+1]];
-            break;
-        case 3:
-            Lcoords = [[y+1,x-1],[y+1,x],[y+1,x+1],[y,x+1]];
-            break;
-    }
-
-    return [Lcoords, colour];
-}
-
-function buildCurrentBlock(or) {
-    switch (currentBlockType) {
-        case "straight":
-            return buildStraight(y,x,or);
-        case "square": 
-            return buildSquare(y,x);
-        case "skew":
-            return buildSkew(y,x,or);
-        case "T": 
-            return buildT(y,x,or);
-        case "L":
-            return buildL(y,x,or);
-    }
-}
-
-function positionBlock() {
-    let coords = currentBlockProps[0];
-    let colour = currentBlockProps[1];
-    coords.forEach(coord => current_grid[coord[0]][coord[1]]=colour);
-}
-
-function drawBlock(row, col, colour) {
-    // Draw a single block at (row,col) with colour
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "black";
-    ctx.beginPath();
-    ctx.rect(col*blockSize, row*blockSize,blockSize,blockSize);
-    ctx.fillStyle = colour;
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-}
-
-function drawGrid() {
-    // Flesh out the previous_grid from the skeleton
-    ctx.clearRect(0,0,grid_width*blockSize,grid_height*blockSize);
-    
-    for (let row=0; row<grid_height; row++) {
-        for (let col=0; col<grid_width; col++) {
-            
-            switch (current_grid[row][col]) {
-                case 1:
-                    drawBlock(row, col, "cyan");
-                    break;
-                case 2:
-                    drawBlock(row, col, "red");
-                    break;
-                case 3:
-                    drawBlock(row, col, "yellow");
-                    break;
-                case 4:
-                    drawBlock(row, col, "lime");
-                    break;
-                case 5:
-                    drawBlock(row, col, "purple");
-                    break;
-            }
-        }
-    }
-}
-
-function drawSkeleton() {
-    // DELETE
-    // Display the skeleton
-    let test_string = '';
-    for (let row=0; row<grid_height; row++) {
-        test_string += current_grid[row].join('') + '<br>';
-    }
-    skeletonGrid.innerHTML = test_string;
-}
-
-function isCollision(direction) {
-    let collisionMap;
-
-    switch (direction) {
-        case "down":
-            collisionMap = currentBlockProps[0].map(coord => {
-                if (coord[0] < grid_height-1 && previous_grid[coord[0]+1][coord[1]] === 0) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            });
-            break;
-
-        case "left":
-            collisionMap = currentBlockProps[0].map(coord => {
-                if (coord[1] > 0 && previous_grid[coord[0]][coord[1]-1] === 0) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            });
-            break;
-
-        case "right":
-            collisionMap = currentBlockProps[0].map(coord => {
-                if (coord[1] < grid_width-1 && previous_grid[coord[0]][coord[1]+1] === 0) {
-                    return 0;
-                } else {
-                    return 1;
-               }
-            });
-            break;
-    }
-
-    let collisionStatus = collisionMap.reduce((val1, val2) => val1 + val2);
-    if (collisionStatus > 0 ) {
+// Collision Logic
+function collide(arena, player) {
+  const [m, o] = [player.matrix, player.pos];
+  for (let y = 0; y < m.length; ++y) {
+    for (let x = 0; x < m[y].length; ++x) {
+      if (m[y][x] !== 0 &&
+         (arena[y + o.y] &&
+         arena[y + o.y][x + o.x]) !== 0) {
         return true;
-    } else {
-        return false;
+      }
     }
+  }
+  return false;
 }
 
-function keyDownHandler(e) {
-    // Handle user input
-    if (e.key === 'ArrowLeft' && !(isCollision("left"))) {
-        x -= 1;
-    } else if (e.key === "ArrowRight" && !(isCollision("right"))) {
-        x += 1;
-    } else if (e.key === "ArrowDown" && !(isCollision("down"))) {
-        y += 1;
-    } else if (e.key === "ArrowUp") {
-        let potential_or = or + 1;
-        potential_or %= 4;
-        currentBlockProps = buildCurrentBlock(potential_or);
+// Colors for Tetrominoes
+const colors = [
+  null,
+  "#ffaaff",
+  "#aaffff",
+  "#ffaaaa",
+  "#9999ff",
+  "#aaaaff",
+  "#aaffaa",
+  "#ffdddd"
+]
 
-        if (!(isCollision("right")) && !(isCollision("left"))) {
-            or = potential_or;
-        }
+// Arena Creator
+function createMatrix(h, w) {
+  const matrix = [];
+  while (h--) {
+    matrix.push(new Array(w).fill(0));
+  };
+  return matrix;
+};
+
+// Merge Player and Arena Matrix
+function merge(arena, player) {
+  player.matrix.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value !== 0) {
+        arena[y + player.pos.y][x + player.pos.x] = value;
+      }
+    })
+  })
+}
+
+// Rounded RNG
+function roundRandom() {
+  let rng = Math.random()
+  if (rng > 0.49) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+// Sweeping
+function arenaSweep() {
+  let rowCount = 1;
+  outer: for (let y = arena.length - 1; y > 0; --y) {
+    console.log(`y: ${y}`)
+    for (let x = 0; x < arena[y].length; ++x) {
+      console.log(`x: ${x}`)
+      if (arena[y][x] === 0) {
+        continue outer;
+      }
     }
-    draw();
-    e.preventDefault();
-}
-document.addEventListener('keydown', keyDownHandler);
-
-function rotateButtonHandler() {
-    let potential_or = or + 1;
-    potential_or %= 4;
-    currentBlockProps = buildCurrentBlock(potential_or);
-
-    if (!(isCollision("right")) && !(isCollision("left"))) {
-        or = potential_or;
+    const row = arena.splice(y, 1)[0].fill(0);
+    arena.unshift(row);
+    ++y;
+    player.score += rowCount * 10;
+    rowCount *= (constantScoreMult + roundRandom());
+    player.score += scoreSmallMod
+    scoreSmallMod += smallModIncrease
+    ++cleared
+    updateScore();
+    if (cleared > (winReq - 1)) {
+      arena.forEach(row => row.fill(0));
+      alert(`You Win! You cleared ${cleared} lines! Your final score was ${player.score}`);
+      player.score = 0;
+      playerReset();
+      return;
     }
-    draw();
-}
-function leftButtonHandler() {
-    if (!isCollision("left")) {
-        x -= 1;
-    }
-    draw();
-}
-function rightButtonHandler() {
-    if (!isCollision("right")) {
-        x += 1;
-    }
-    draw();
-}
-function downButtonHandler() {
-    if (!isCollision("down")) {
-        y += 1
-    }
-    draw();
-}
-rotateButton.addEventListener("mousedown", rotateButtonHandler);
-leftButton.addEventListener("mousedown", leftButtonHandler);
-rightButton.addEventListener("mousedown", rightButtonHandler);
-downButton.addEventListener("mousedown", downButtonHandler);
-
-function isGameOver() {
-    // Check if there if blocks are stacked to the ceiling
-    let i = 0;
-     while (i < grid_width) {
-
-        if (previous_grid[0][i] > 0) {
-            ctx.font = "24px monospace";
-            ctx.fillStyle = "rgb(255,255,255)";
-            ctx.textAlign = "center";
-            ctx.fillText("GAME OVER", grid_width*blockSize/2, grid_height*blockSize/2);
-            return true;
-        }
-
-        i++;
-     }
-
-     return false;
+  }
 }
 
-function drawScore() {
-    scoreLabel.innerHTML = `score: ${score}`
-}
-
-function checkCompleteRows() {
-    for (let row=0; row<grid_height; row++) {
-        if (previous_grid[row].indexOf(0) < 0) {
-            score += 1;
-            previous_grid.splice(row,1);
-            previous_grid.unshift(clear_grid[0]);
-        }
-    }
-
-    drawScore();
-}
-
-function advance() {
-    // Check if piece has collided with something
-    // or else advance y coordinate
-    if (isCollision("down")) {
-        // If game is not over reset coords, pick new block, set old previous_grid to current previous_grid, eliminate full rows
-        // or else stop the game
-        if (!isGameOver()) {
-            x=Math.floor(grid_width/2);
-            y=0;
-            or=0;
-            currentBlockType = blockType[Math.floor(Math.random()*5)];
-            previous_grid = structuredClone(current_grid);
-            checkCompleteRows();
-        } else {
-            stop();
-            console.log("game over");
-        }
-    } else {
-        y+=1;
-    }
-}
-
+// Drawing Everything
 function draw() {
-    // If game is not over position the current block and render
-    if (!isGameOver()) {
-        current_grid = structuredClone(previous_grid);
-        currentBlockProps = buildCurrentBlock(or)
-        positionBlock();
-        drawGrid();
-        // drawSkeleton();
+  context.fillStyle="#000000";
+  context.fillRect(0, 0, 240, 400)
+  hcon.fillStyle="#111111"
+  hcon.fillRect(0, 0, 80, 80)
+  drawMatrix(arena, {x: 0, y: 0})
+  drawMatrix(player.matrix, player.pos)
+  drawMat(hold, {x:0, y:0})
+}
+
+// Drawing Controlled Piece/Arena/Hold
+function drawMatrix(matrix, offset) {
+  matrix.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value !== 0) {
+        context.fillStyle = '#606060';
+        context.fillRect(x + offset.x, y + offset.y, 1, 1);
+        context.fillStyle = colors[value];
+        context.fillRect(x + offset.x + 0.1,
+                         y + offset.y + 0.1, 
+                         0.8, 0.8);
+      };
+    });
+  });
+};
+function drawMat(matrix, offset) {
+  matrix.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value !== 0) {
+        hcon.fillStyle = '#606060';
+        hcon.fillRect(x + offset.x, y + offset.y, 1, 1)
+        hcon.fillStyle = colors[value];
+        hcon.fillRect(x + offset.x + 0.1,
+                         y + offset.y + 0.1, 
+                         0.8, 0.8);
+      };
+    });
+  });
+};
+
+// Play Field
+let arena = createMatrix(20, 12);
+console.table(arena);
+
+// Player Data
+const player = {
+  pos: {x:4, y:0},
+  matrix: null,
+  score: 0,
+}
+
+// Time Variables
+let lastTime = 0;
+let dropCounter = 0;
+let dropInterval = 1000;
+
+
+// Player Movement
+function playerMove(dir) {
+  player.pos.x = player.pos.x + dir
+  if (collide(arena, player)) {
+    player.pos.x = player.pos.x + (dir * -1)
+  }
+}
+
+// Rotation & Checking
+function rotate(dir) {
+  const pos = player.pos.x;
+  let offset = 1;
+  rot(player.matrix, dir);
+  while(collide(arena, player)) {
+    player.pos.x += offset
+    offset = -(offset + (offset > 0 ? 1 : -1));
+    if (offset > player.matrix[0].length) {
+      rot(player.matrix, dir * -1);
+      player.pos.x = pos;
+      return;
     }
+  }
 }
 
-function start() {
-    // Initialize a new game
-    startButton.disabled = true;
-    score = 0;
-    previous_grid = structuredClone(clear_grid);
-    y=0;
-    x=Math.floor(grid_width/2);
-    or=0;
-
-    if (!advanceInterval && !drawInterval) {
-        advanceInterval = setInterval(advance, 500)
-        drawInterval = setInterval(draw, 500);
+// Rotation
+function rot(matrix, dir) {
+  for (let y = 0; y < matrix.length; ++y) {
+    for (let x = 0; x < y; ++x) {
+      [
+        matrix[x][y],
+        matrix[y][x],
+      ] =[
+        matrix[y][x],
+        matrix[x][y],
+      ]
     }
-
-    console.log("game in play");
+  }
+  if (dir > 0) {
+    matrix.forEach(row => row.reverse());
+  } else {
+    matrix.reverse();
+  }
 }
 
-function stop() {
-    // End the game
-    clearInterval(advanceInterval);
-    clearInterval(drawInterval);
-    advanceInterval = null;
-    drawInterval = null;
-
-    startButton.disabled = false;
-    console.log("game out of play");
+// Changing Pieces
+function playerReset() {
+  player.matrix = createPiece(pieces[pieces.length * Math.random() | 0])
+  player.pos.y = 0
+  player.pos.x = (arena[0].length / 2 | 0) -
+    (player.matrix[0].length / 2 | 0)
+  if (collide(arena, player)) {
+    arena.forEach(row => row.fill(0))
+    alert(`Game Over. Final score: ${player.score} Lines Cleared: ${cleared}/${winReq}`);
+    player.score = 0
+    scoreSmallMod = 0
+    cleared = 0
+    updateScore()
+  }
 }
+
+// Dropping Function
+function drop() {
+  player.pos.y++
+  if (collide(arena, player)) {
+    player.pos.y--;
+    merge(arena, player);
+    playerReset();
+    arenaSweep();
+  }
+  dropCounter = 0;
+}
+
+// Basic Updating Function
+function update(time = 0) {
+  const deltaTime = time - lastTime;
+  lastTime = time;
+  dropCounter = dropCounter + deltaTime
+  if (dropCounter > dropInterval) {
+  drop()      
+      }
+  draw();
+  requestAnimationFrame(update);
+}
+
+// Updating Score
+function updateScore() {
+  document.getElementById("score").innerText = `Score: ${player.score} Cleared: ${cleared}/${winReq}`
+}
+
+// Functionality
+document.addEventListener('keydown', event => {
+  if (event.key === "ArrowLeft") {
+    playerMove(-1)
+  } else if (event.key === "ArrowRight") {
+    playerMove(1)
+  } else if (event.key === "ArrowDown") {
+    drop()
+  } else if (event.key === " ") {
+    while (!collide(arena, player)) {
+      ++player.pos.y
+    }
+    --player.pos.y
+    drop()
+  } else if (event.key === "ArrowUp") {
+    rotate(1)
+  } else if (event.key === "q") {
+    rotate(1)
+  } else if (event.key === "e") {
+    rotate(-1)
+  } else if (event.key === "Control") {
+    rotate(-1)
+  } else if (event.key === "Alt") {
+    rotate(2)
+  } else if (event.key === "Shift") {
+    [player.matrix, hold] = [hold, player.matrix];
+    if (collide(arena, player)) {
+      [player.matrix, hold] = [hold, player.matrix];
+    }
+  };
+});
+playerReset();
+updateScore();
+update();
