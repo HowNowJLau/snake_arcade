@@ -40,6 +40,8 @@ public class User {
 	
 	private Integer tickets;
 	
+	//private Reward activeReward;
+	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<Reward> rewards;
 	

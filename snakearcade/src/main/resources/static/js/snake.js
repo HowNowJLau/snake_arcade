@@ -148,22 +148,3 @@ const placeFood = () => {
   foodY = Math.floor(Math.random() * rows) * blockSize;
 };
 
-// Initialize the tickets and image variables
-let tickets = 0;
-let image = 'https://api.dicebear.com/6.x/bottts/svg'; // replace with your API endpoint
-
-// Update the tickets and image variables whenever the player scores points 
-function updateRewards(newPoints) {
-  tickets += newPoints;
-
-  // Generate a new image with the DiceBear Avatars API
-  fetch('https://api.dicebear.com/6.x/bottts/svg')
-    .then(response => response.text())
-    .then(data => {
-      // Update the rewards display in the rewards.jsp file with the new trophy image
-      document.getElementById("tickets").innerHTML = tickets;
-      document.getElementById("image").innerHTML = data;
-    })
-    .catch(error => console.error(error));
-}
-

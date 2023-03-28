@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.project.snakearcade.models.LoginUser;
 import com.project.snakearcade.models.User;
+import com.project.snakearcade.services.ArchivedRewardService;
 import com.project.snakearcade.services.UserService;
 
 @Controller
 public class UserController {
 	
 	private final UserService userServ;
+	private final ArchivedRewardService archivedRewardServ;
 	
-	public UserController(UserService userServ) {
+	public UserController(UserService userServ, ArchivedRewardService archivedRewardServ) {
 		this.userServ = userServ;
+		this.archivedRewardServ = archivedRewardServ;
 	}
 
 	@GetMapping("/")
@@ -83,6 +86,15 @@ public class UserController {
     	model.addAttribute("loggedUser", userServ.getOne((Long) session.getAttribute("user_id")));
     	return "/main/dashboard.jsp";
     }
+    
+    @GetMapping("/arcade/rewards")
+	public String rewards(HttpSession session, Model model) {
+		model.addAttribute("loggedUser", userServ.getOne((Long)session.getAttribute("user_id")));
+		model.addAttribute("allRewards", archivedRewardServ.getAll());
+		return "/main/rewards.jsp";
+	}
+    
+    
     
     @GetMapping("/logout")
     public String logout(HttpSession session) {

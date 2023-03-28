@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,12 +14,21 @@
 <div class="rewards-container">
   <h2>Your Rewards</h2>
   
-  <p>Tickets: <span id="tickets">0</span></p>
+  <p>Tickets: ${loggedUser.tickets}</p>
 
-  <p>Image: <img src="https://api.dicebear.com/6.x/bottts/svg" alt="avatar"/></p>
+  
+  <c:forEach var="reward" items="${allRewards}">
+  <div class="one-reward">
+    <p>Image:</p>
+  	<div class="reward-img">
+ 	  <img src="${reward.hyperlink}" alt="avatar" name="${reward.name}"/>
+ 	</div>
+ 	<p>Cost: ${reward.cost} tickets</p>
+  	<a href="/arcade/rewards/redeem">Redeem this Avatar</a>
+  </div>
+  </c:forEach>
 </div>
 
 </body>
-<script type="text/javascript" src="/js/rewards.js"></script>
 
 </html>
