@@ -17,6 +17,7 @@
 				<li><a href="/arcade/snake" class="btn btn-primary">Snake Game</a></li>
 				<li><a href="/arcade/tetris" class="btn btn-primary">Tetris</a></li>
 				<li><a href="/arcade/tictactoe" class="btn btn-primary">Tic-tac-toe</a></li>
+				<li><a href="/arcade/rewards" class="btn btn-primary">Rewards</a></li>
 			</ul>
 		</nav>
 	</div>

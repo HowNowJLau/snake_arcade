@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<a href="/arcade">Back Home</a>  
+<br><a href="/arcade">Back Home</a>  <span><a href="/arcade/rewards">Rewards</a> </span>
 <div><h1>Snake Game</h1></div>
 <body>
 <input type="hidden" value="${user_id}" class="user_id"/>
