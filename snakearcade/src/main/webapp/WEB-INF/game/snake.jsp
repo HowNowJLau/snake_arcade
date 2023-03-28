@@ -12,12 +12,13 @@
 <a href="/arcade">Back Home</a>  
 <div><h1>Snake Game</h1></div>
 <body>
+<input type="hidden" value="${user_id}" class="user_id"/>
 <canvas class="board"></canvas>
 
 <div class="game-over hidden">
   <h1>Game Over</h1>
   <h2> Score: <span class="score">0</span></h2>
-  <button class="rest-btn">Restart</button>
+  <button class="reset-btn">Restart</button>
 </div>
 
 </body>

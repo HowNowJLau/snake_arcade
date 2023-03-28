@@ -38,6 +38,8 @@ public class User {
 	@NotEmpty(message="Confirm password")
 	private String passwordConfirm;
 	
+	private Integer tickets;
+	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<Reward> rewards;
 	
@@ -83,6 +85,14 @@ public class User {
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
+	
+	public Integer getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(Integer tickets) {
+		this.tickets = tickets;
+	}
 
 	public List<Reward> getRewards() {
 		return rewards;
@@ -102,8 +112,10 @@ public class User {
 
 	@PrePersist
 	protected void onCreate() {
+		this.tickets = 0;
 		this.createdAt = new Date();
 	}
+	
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = new Date();

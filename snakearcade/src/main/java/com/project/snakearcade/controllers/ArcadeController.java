@@ -26,4 +26,5 @@ public class ArcadeController {
 	public String tictactoe() {
 		return "/game/tictactoe.jsp";
 	}
+	
 }
