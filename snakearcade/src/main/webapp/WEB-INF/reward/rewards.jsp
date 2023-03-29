@@ -7,16 +7,31 @@
 <title>Rewards</title>
 <link rel="stylesheet" type="text/css" href="/css/rewards.css">
 
+<style>
+  		.one-reward {
+    	display: inline-block;
+    	margin-right: 20px;
+    	margin-bottom: 30px;
+  		html {
+  		block-size: 100%;
+  		inline-size: 100%;
+		}
+
+</style>
+
 </head>
 <body>
 <input type="hidden" value="${user_id}" class="user_id"/>
 <div><a href="/arcade">Back Home</a> </div>
 <div class="rewards-container">
-  <h2>Your Rewards</h2>
+
+  <h1>Your Rewards</h1>
+
   
   <p>Tickets: ${loggedUser.tickets}</p>
 
   
+
   <c:forEach var="archivedReward" items="${allRewards}">
   <div class="one-reward">
     <p>Image:</p>
@@ -40,6 +55,7 @@
   			</form>
   		</c:otherwise>
   	</c:choose>
+
   </div>
   </c:forEach>
 </div>
