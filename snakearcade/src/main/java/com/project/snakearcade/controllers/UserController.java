@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.project.snakearcade.models.LoginUser;
 import com.project.snakearcade.models.User;
+import com.project.snakearcade.services.RewardService;
 import com.project.snakearcade.services.UserService;
 
 @Controller
 public class UserController {
 	
 	private final UserService userServ;
+	private final RewardService rewardServ;
 	
-	public UserController(UserService userServ) {
+	public UserController(UserService userServ, RewardService rewardServ) {
 		this.userServ = userServ;
+		this.rewardServ = rewardServ;
 	}
 
 	@GetMapping("/")
@@ -54,6 +57,7 @@ public class UserController {
         // TO-DO Later: Store their ID from the DB in session, 
         // in other words, log them in.
         session.setAttribute("user_id", userToRegister.getId());
+        rewardServ.create(userToRegister.getId(), Long.valueOf(2));
         return "redirect:/arcade";
     }
     
@@ -71,7 +75,6 @@ public class UserController {
     
         // No errors! 
         session.setAttribute("user_id", user.getId());
-    
         return "redirect:/arcade";
     }
     

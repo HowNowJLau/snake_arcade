@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.snakearcade.models.ArchivedReward;
 import com.project.snakearcade.models.Reward;
@@ -41,8 +42,17 @@ public class RewardController {
 	}
 	
 	@PostMapping("/arcade/rewards/redeem/{id}")
-	public String redeem(@PathVariable("id") Long rewardId, HttpSession session) {
-		rewardServ.create((Long)session.getAttribute("user_id"), rewardId);
+	public String redeem(@PathVariable("id") Long archivedRewardId, HttpSession session,
+			RedirectAttributes redirectAttributes) {
+		User user = userServ.getOne((Long)session.getAttribute("user_id"));
+		ArchivedReward archivedReward = archivedRewardServ.getOne(archivedRewardId);
+		if (user.getTickets() >= archivedReward.getCost()) {
+			user.setTickets(user.getTickets() - archivedReward.getCost());
+			userServ.update(user);
+			rewardServ.create((Long)session.getAttribute("user_id"), archivedRewardId);
+			return "redirect:/arcade/rewards";
+		}
+		redirectAttributes.addFlashAttribute("error", "Not enough tickets.");
 		return "redirect:/arcade/rewards";
 	}
 	
