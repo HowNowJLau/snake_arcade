@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,15 +24,15 @@ public class Reward {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message="Name required")
-	private String name;
-	
 	private Boolean isEnabled;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="archivedReward_id")
+	private ArchivedReward archivedReward;
 	
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -46,20 +45,17 @@ public class Reward {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Reward(User user, ArchivedReward archivedReward) {
+		this.user = user;
+		this.archivedReward = archivedReward;
+	}
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public User getUser() {
@@ -76,6 +72,14 @@ public class Reward {
 
 	public void setIsEnabled(Boolean isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+
+	public ArchivedReward getArchivedReward() {
+		return archivedReward;
+	}
+
+	public void setArchivedReward(ArchivedReward archivedReward) {
+		this.archivedReward = archivedReward;
 	}
 
 	public Date getCreatedAt() {
