@@ -14,6 +14,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,7 +29,7 @@ public class ArchivedReward {
 	@NotEmpty(message="Name required")
 	private String name;
 	
-	@NotEmpty
+	@Positive(message="Cost cannot be negative")
 	private Integer cost;
 	
 	@NotEmpty
