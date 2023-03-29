@@ -12,7 +12,7 @@
 <body>
 <input type="hidden" value="${user_id}" class="user_id"/>
 <br>
-<a href="/arcade">Back Home</a> <br>
+<div> <a href="/arcade">Back Home</a> <span><a href="/arcade/rewards">Rewards</a> </span></div>  <br>
   <body onload="initialize()">
     <h1>Tic-Tac-Toe</h1>
     <table id="table_game">

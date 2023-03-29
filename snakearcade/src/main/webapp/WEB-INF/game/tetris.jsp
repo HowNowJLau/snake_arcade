@@ -8,7 +8,7 @@
 </head>
 <body>
 <br>
-<div> <a href="/arcade">Back Home</a> </div>
+<div> <a href="/arcade">Back Home</a> <span><a href="/arcade/rewards">Rewards</a> </span></div> 
 <h1>Tetris</h1>
 <input type="hidden" value="${user_id}" class="user_id"/>
 <div id="score">Score:</div> <br>
