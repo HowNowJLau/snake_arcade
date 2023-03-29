@@ -10,6 +10,8 @@
 <title>Snake Arcade</title>
 </head>
 <body>
+<div><a href="/arcade">Back Home</a> <a href="/arcade/rewards">View Rewards!</a>
+</div>
 	<h1>My Collection</h1>
 	<c:forEach var="reward" items="${userRewards}">
   <div class="one-reward">

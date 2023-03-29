@@ -22,7 +22,8 @@
 </head>
 <body>
 <input type="hidden" value="${user_id}" class="user_id"/>
-<div><a href="/arcade">Back Home</a> </div>
+<div><a href="/arcade">Back Home</a> <a href="/arcade/rewards/collection">View My Avatars!</a>
+</div>
 <div class="rewards-container">
 
   <h1>Your Rewards</h1>

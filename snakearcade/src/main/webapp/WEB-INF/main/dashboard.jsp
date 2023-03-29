@@ -4,19 +4,28 @@
 <head>
 	<link rel="stylesheet" href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
-	<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 	<meta charset="UTF-8">
 	<title>Snake Arcade</title>
 	<link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 <body>
 	<div class="container py-5">
+	<h1 class="mb-4">Welcome, ${loggedUser.userName}!</h1>	
 		<div style="position: absolute; top: 30px; right: 50px;">
 			<a href="/logout" class="btn btn-secondary" style="font-family: sans-serif;">Logout</a>
 		</div>
-		<h1 class="mb-4">Welcome!</h1>
-		<div style="display: flex; justify-content: center; font-family: sans-serif;">		
-			<nav class="game-nav">
+		<div style="position: absolute; top: 50px; left: 50px; margin-top: -175px;">
+		  <nav class="game-nav">
+		  <ul>
+		  <li>
+		    <img class="avatar" src="/png/defaultpic.png" alt="avatar">
+		    <br>
+            <a href="arcade/rewards/collection">View My Avatars!</a>
+            </li></ul>
+          </nav>
+		</div>
+	<nav class="game-nav">
+	<br>
 	<ul>
 	<li>
 		<a href="/arcade/snake">
