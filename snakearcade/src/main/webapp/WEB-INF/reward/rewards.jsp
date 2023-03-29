@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Rewards</title>
 <link rel="stylesheet" type="text/css" href="/css/rewards.css">
+
 <style>
   		.one-reward {
     	display: inline-block;
@@ -17,24 +18,44 @@
 		}
 
 </style>
+
 </head>
 <body>
 <input type="hidden" value="${user_id}" class="user_id"/>
 <div><a href="/arcade">Back Home</a> </div>
 <div class="rewards-container">
+
   <h1>Your Rewards</h1>
+
   
   <p>Tickets: ${loggedUser.tickets}</p>
 
   
-  <c:forEach var="reward" items="${allRewards}">
+
+  <c:forEach var="archivedReward" items="${allRewards}">
   <div class="one-reward">
-    <p>${reward.name}</p>
+    <p>Image:</p>
   	<div class="reward-img">
- 	  <img src="${reward.hyperlink}" alt="avatar" name="${reward.name}"/>
+ 	  <img src="${archivedReward.hyperlink}" alt="avatar" name="${archivedReward.name}"/>
  	</div>
- 	<p>${reward.cost} tickets</p>
-  	<a href="/arcade/rewards/redeem">Redeem Avatar!</a>
+ 	<p>Cost: ${archivedReward.cost} tickets</p>
+ 	<c:set var="doesUserHaveReward" value="false"/>
+ 	<c:forEach var="reward" items="${archivedReward.rewards}">
+ 		<c:if test="${reward.user.id == user_id}">
+ 			<c:set var="doesUserHaveReward" value="true"/>
+ 		</c:if>
+  	</c:forEach>
+  	<c:choose>
+  		<c:when test="${doesUserHaveReward}">
+  			<p>Already Redeemed</p>
+  		</c:when>
+  		<c:otherwise>
+  			<form action="/arcade/rewards/redeem/${archivedReward.id}" method="post">
+  				<input type="submit" value="Redeem Avatar"/>
+  			</form>
+  		</c:otherwise>
+  	</c:choose>
+
   </div>
   </c:forEach>
 </div>

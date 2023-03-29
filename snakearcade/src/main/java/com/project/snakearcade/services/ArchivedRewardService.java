@@ -1,6 +1,7 @@
 package com.project.snakearcade.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -16,5 +17,10 @@ public class ArchivedRewardService {
 	
 	public List<ArchivedReward> getAll() {
 		return archivedRewardRepo.findAll();
+	}
+	
+	public ArchivedReward getOne(Long id) {
+		Optional<ArchivedReward> optionalArchivedReward = archivedRewardRepo.findById(id);
+		return optionalArchivedReward.isPresent() ? optionalArchivedReward.get() : null;
 	}
 }
