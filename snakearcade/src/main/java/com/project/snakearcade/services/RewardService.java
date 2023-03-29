@@ -1,5 +1,7 @@
 package com.project.snakearcade.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.project.snakearcade.models.ArchivedReward;
@@ -21,6 +23,11 @@ public class RewardService {
 		this.archivedRewardServ = archivedRewardServ;
 	}
 
+	public Reward getOne(Long id) {
+		Optional<Reward> optionalReward = rewardRepo.findById(id);
+		return optionalReward.isPresent() ? optionalReward.get() : null;
+	}
+	
 	public Reward create(Long userId, Long archivedRewardId) {
 		User thisUser = userServ.getOne(userId);
 		ArchivedReward thisArchivedReward = archivedRewardServ.getOne(archivedRewardId);
@@ -28,5 +35,7 @@ public class RewardService {
 		return rewardRepo.save(rewardToSave);
 	}
 	
-	
+	public Reward update(Reward reward) {
+		return rewardRepo.save(reward);
+	}
 }

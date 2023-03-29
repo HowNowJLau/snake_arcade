@@ -23,4 +23,8 @@ public class ArchivedRewardService {
 		Optional<ArchivedReward> optionalArchivedReward = archivedRewardRepo.findById(id);
 		return optionalArchivedReward.isPresent() ? optionalArchivedReward.get() : null;
 	}
+	
+	public ArchivedReward create(ArchivedReward reward) {
+		return archivedRewardRepo.save(reward);
+	}
 }

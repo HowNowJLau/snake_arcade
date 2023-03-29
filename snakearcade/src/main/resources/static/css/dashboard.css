@@ -1,15 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css">
-	<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
-	<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
-	<meta charset="UTF-8">
-	<title>Snake Arcade</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 		h1 {
 			font-family: 'Press Start 2P', cursive;
 			color: #E8DB7D;
@@ -124,50 +113,3 @@
     	text-align: center;
   		}
 		}
-	</style>
-</head>
-<body>
-	<div class="container py-5">
-	<h1>Reward Creator!</h1>
-     <div class ="mx-auto">
-        <h2 class="text-2xl font-bold mb-4 text-white">Create Reward</h2>
-        <form:form action="/arcade/rewards/admin/create" method="post" modelAttribute="archived_reward" class="w-full max-w-sm">
-          <div class="mb-4">
-            <label class="block text-white font-bold mb-2" for="rewardCost">
-              Cost
-            </label>
-            <form:input path="cost" class="form-input" type="number" id="rewardCost" />
-            <br>
-            <form:errors path="cost" class="text-pink-400 text-sm mt-1" />
-          </div>
-          <div class="mb-4">
-            <label class="block text-white font-bold mb-2" for="rewardHyperLink">
-              Hyperlink
-            </label>
-            <form:input path="hyperlink" class="form-input" type="text" id="rewardHyperlink" />
-            <br>
-            <form:errors path="hyperlink" class="text-pink-400 text-sm mt-1" />
-          </div>
-        <div class="mb-4">
-            <label class="block text-white font-bold mb-2" for="rewardName">
-              Name
-            </label>
-            <form:input path="name" class="form-input" type="text" id="rewardName" />
-            <br>
-            <form:errors path="name" class="text-pink-400 text-sm mt-1" />
-          </div>
-          <div class="flex items-center justify-between">
-          <div class="mx-auto">          
-            <button type="submit" class="bg-purple-700 text-white font-bold py-2 px-4 rounded">
-              Create!
-            </button>
-            </div>
-          </div>
-        </form:form>
-      </div>
-	</div>
-</body>
-</html>
-
-
-
