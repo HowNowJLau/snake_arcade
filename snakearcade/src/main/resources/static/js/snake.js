@@ -31,7 +31,7 @@ window.onload = () => {
 
   placeFood();
   document.addEventListener("keyup", changeDirection);
-  setInterval(update, 100);
+  setInterval(update, 50);
 };
 
 const GameOver = async () => {

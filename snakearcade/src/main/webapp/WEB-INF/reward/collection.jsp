@@ -10,12 +10,11 @@
 <title>Snake Arcade</title>
 </head>
 <body>
-<div><a href="/arcade">Back Home</a> <a href="/arcade/rewards">View Rewards!</a>
-</div>
+<div><a href="/arcade">Back Home</a> <a href="/arcade/rewards">View Rewards!</a></div>
+<div class="rewards-container">
 	<h1>My Collection</h1>
 	<c:forEach var="reward" items="${userRewards}">
   <div class="one-reward">
-    <p>Image:</p>
   	<div class="reward-img">
  	  <img src="${reward.archivedReward.hyperlink}" alt="avatar" name="${reward.archivedReward.name}"/>
  	</div>
@@ -32,5 +31,6 @@
   	</c:choose>
   </div>
   </c:forEach>
+  </div>
 </body>
 </html>
