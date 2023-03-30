@@ -16,8 +16,13 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="rewards")
+@JsonIdentityInfo(scope = Reward.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Reward {
 
 	@Id
@@ -28,10 +33,12 @@ public class Reward {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
+	@JsonBackReference(value="user-reward")
 	private User user;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="archivedReward_id")
+	@JsonBackReference(value="reward-archive")
 	private ArchivedReward archivedReward;
 	
 	@Column(updatable=false)

@@ -27,7 +27,7 @@
 <div class="rewards-container">
   <h1>Your Rewards</h1>
   <p>Tickets: ${loggedUser.tickets}</p>
-  ${error}
+  <p>${error}</p>
   <c:forEach var="archivedReward" items="${allRewards}">
   <div class="one-reward">
   	<div class="reward-img">

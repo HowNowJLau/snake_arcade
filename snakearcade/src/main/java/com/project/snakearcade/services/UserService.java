@@ -1,5 +1,6 @@
 package com.project.snakearcade.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,6 +23,10 @@ public class UserService {
 		String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashed);
 		return userRepo.save(user);
+	}
+	
+	public List<User> getAll() {
+		return userRepo.findAll();
 	}
 	
 	public User getOne(Long id) {
