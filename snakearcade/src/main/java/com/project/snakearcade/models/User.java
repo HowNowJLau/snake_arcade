@@ -19,8 +19,13 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="users")
+@JsonIdentityInfo(scope = User.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
 	@Id
@@ -41,6 +46,7 @@ public class User {
 	private Integer tickets;
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	@JsonManagedReference(value="user-reward")
 	private List<Reward> rewards;
 	
 	@Column(updatable=false)

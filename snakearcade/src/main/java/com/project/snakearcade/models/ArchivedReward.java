@@ -18,8 +18,13 @@ import javax.validation.constraints.Positive;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="archivedRewards")
+@JsonIdentityInfo(scope = ArchivedReward.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ArchivedReward {
 
 	@Id
@@ -36,6 +41,7 @@ public class ArchivedReward {
 	private String hyperlink;
 	
 	@OneToMany(mappedBy="archivedReward", fetch=FetchType.LAZY)
+	@JsonManagedReference(value="reward-archive")
 	private List<Reward> rewards;
 	
 	@Column(updatable=false)

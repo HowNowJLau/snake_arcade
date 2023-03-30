@@ -123,12 +123,10 @@ function roundRandom() {
 }
 
 // Sweeping
-function arenaSweep() {
+async function arenaSweep() {
   let rowCount = 1;
   outer: for (let y = arena.length - 1; y > 0; --y) {
-    console.log(`y: ${y}`)
     for (let x = 0; x < arena[y].length; ++x) {
-      console.log(`x: ${x}`)
       if (arena[y][x] === 0) {
         continue outer;
       }
@@ -144,6 +142,30 @@ function arenaSweep() {
     updateScore();
     if (cleared > (winReq - 1)) {
       arena.forEach(row => row.fill(0));
+      try {
+		userId = document.querySelector(".user_id").value;
+    	const res = await fetch("http://localhost:8080/api/users/" + userId);
+    	const data = await res.json();
+   		console.log(res.json);
+    	const updateUser = {
+	  	...data,
+	  	tickets: data.tickets + player.score
+		}
+		console.log(updateUser);
+		const updateData = {
+	  	method: "PUT",
+	  	headers:{
+			"Content-Type": "application/json",
+			"Accept": "application/json"
+	  	},
+	  	body:JSON.stringify(updateUser)
+		}
+		const res2 = await fetch("http://localhost:8080/api/users/" + userId, updateData);
+		const data2 = await res2.json();
+		console.log(data2);
+  	} catch (error) {
+		console.log(error.message);
+  	}
       alert(`You Win! You cleared ${cleared} lines! Your final score was ${player.score}`);
       player.score = 0;
       playerReset();
@@ -195,7 +217,6 @@ function drawMat(matrix, offset) {
 
 // Play Field
 let arena = createMatrix(20, 12);
-console.table(arena);
 
 // Player Data
 const player = {
@@ -262,11 +283,11 @@ async function playerReset() {
     (player.matrix[0].length / 2 | 0)
   if (collide(arena, player)) {
     arena.forEach(row => row.fill(0))
-    alert(`Game Over. Final score: ${player.score} Lines Cleared: ${cleared}/${winReq}`);
     try {
 	userId = document.querySelector(".user_id").value;
     const res = await fetch("http://localhost:8080/api/users/" + userId);
     const data = await res.json();
+    console.log(res.json);
     const updateUser = {
 	  ...data,
 	  tickets: data.tickets + player.score
@@ -286,6 +307,7 @@ async function playerReset() {
   } catch (error) {
 	console.log(error.message);
   }
+    alert(`Game Over. Final score: ${player.score} Lines Cleared: ${cleared}/${winReq}`);
     player.score = 0
     scoreSmallMod = 0
     cleared = 0

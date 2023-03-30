@@ -28,10 +28,9 @@
 
   <h1>Your Rewards</h1>
   <p>Tickets: ${loggedUser.tickets}</p>
-  ${error}
+  <p>${error}</p>
   <c:forEach var="archivedReward" items="${allRewards}">
   <div class="one-reward">
-    <p>Image:</p>
   	<div class="reward-img">
  	  <img src="${archivedReward.hyperlink}" alt="avatar" name="${archivedReward.name}"/>
  	</div>

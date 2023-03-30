@@ -1,12 +1,15 @@
 package com.project.snakearcade.controllers;
 
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.project.snakearcade.models.User;
 import com.project.snakearcade.services.UserService;
@@ -18,6 +21,11 @@ public class ApiController {
 	
 	public ApiController(UserService userServ) {
 		this.userServ = userServ;
+	}
+	
+	@GetMapping("/api/users") 
+	public List<User> getAll() {
+		return userServ.getAll();
 	}
 	
 	@GetMapping("/api/users/{id}")
