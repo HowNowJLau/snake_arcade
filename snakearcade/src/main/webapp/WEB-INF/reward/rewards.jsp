@@ -25,13 +25,11 @@
 <div><a href="/arcade">Back Home</a> <a href="/arcade/rewards/collection">View My Avatars!</a>
 </div>
 <div class="rewards-container">
-
   <h1>Your Rewards</h1>
   <p>Tickets: ${loggedUser.tickets}</p>
   ${error}
   <c:forEach var="archivedReward" items="${allRewards}">
   <div class="one-reward">
-    <p>Image:</p>
   	<div class="reward-img">
  	  <img src="${archivedReward.hyperlink}" alt="avatar" name="${archivedReward.name}"/>
  	</div>
@@ -52,7 +50,6 @@
   			</form>
   		</c:otherwise>
   	</c:choose>
-
   </div>
   </c:forEach>
 </div>
