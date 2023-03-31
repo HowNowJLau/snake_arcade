@@ -60,6 +60,15 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Reward getAvatar() {
+		for (Reward reward : this.getRewards()) {
+			if (reward.getIsEnabled()) {
+				return reward;
+			}
+		}
+		return null;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -126,4 +135,6 @@ public class User {
 	protected void onUpdate() {
 		this.updatedAt = new Date();
 	}
+	
+	
 }

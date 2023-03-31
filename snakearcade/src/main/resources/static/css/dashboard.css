@@ -123,5 +123,9 @@
 		p{
 		text-align: center;
 		color: white;
-		margin-top: 20px;
+		margin-top: 10px;
+		margin-bottom: 2px;
+		}
+		.view-avatar {
+		margin-top: 5px;
 		}

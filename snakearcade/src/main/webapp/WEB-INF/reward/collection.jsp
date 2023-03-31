@@ -7,6 +7,17 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="/css/rewards.css">
+<style>
+  		.one-reward {
+    	display: inline-block;
+    	margin-right: 20px;
+    	margin-bottom: 30px;
+  		html {
+  		block-size: 100%;
+  		inline-size: 100%;
+		}
+
+</style>
 <title>Snake Arcade</title>
 </head>
 <body>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.project.snakearcade.models.ArchivedReward;
 import com.project.snakearcade.models.LoginUser;
 import com.project.snakearcade.models.User;
 import com.project.snakearcade.services.RewardService;
@@ -41,11 +42,10 @@ public class UserController {
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("newUser") User newUser, 
             BindingResult result, Model model, HttpSession session) {
-        
+    	
         // TO-DO Later -- call a register method in the service 
         // to do some extra validations and create a new user!
     	User userToRegister = userServ.register(newUser, result);
-        
         if(result.hasErrors()) {
             // Be sure to send in the empty LoginUser before 
             // re-rendering the page.
@@ -57,7 +57,7 @@ public class UserController {
         // TO-DO Later: Store their ID from the DB in session, 
         // in other words, log them in.
         session.setAttribute("user_id", userToRegister.getId());
-        rewardServ.create(userToRegister.getId(), Long.valueOf(2));
+        rewardServ.create(userToRegister.getId(), Long.valueOf(1), Boolean.TRUE);
         return "redirect:/arcade";
     }
     
@@ -83,7 +83,10 @@ public class UserController {
     	if (session.getAttribute("user_id") == null) {
     		return "redirect:/";
     	}
-    	model.addAttribute("loggedUser", userServ.getOne((Long) session.getAttribute("user_id")));
+    	User loggedUser = userServ.getOne((Long) session.getAttribute("user_id"));
+    	ArchivedReward avatar = loggedUser.getAvatar().getArchivedReward();
+    	model.addAttribute("loggedUser", loggedUser);
+    	model.addAttribute("avatar", avatar);
     	return "/main/dashboard.jsp";
     }
 

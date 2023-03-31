@@ -49,7 +49,7 @@ public class RewardController {
 		if (user.getTickets() >= archivedReward.getCost()) {
 			user.setTickets(user.getTickets() - archivedReward.getCost());
 			userServ.update(user);
-			rewardServ.create((Long)session.getAttribute("user_id"), archivedRewardId);
+			rewardServ.create((Long)session.getAttribute("user_id"), archivedRewardId, Boolean.FALSE);
 			return "redirect:/arcade/rewards";
 		}
 		redirectAttributes.addFlashAttribute("error", "Not enough tickets.");

@@ -31,7 +31,7 @@ window.onload = () => {
 
   placeFood();
   document.addEventListener("keyup", changeDirection);
-  setInterval(update, 50);
+  setInterval(update, 80);
 };
 
 const GameOver = async () => {
@@ -78,7 +78,7 @@ const update = async () => {
 
   if (snakeX === foodX && snakeY === foodY) {
     snakeBody.push([foodX, foodY]);
-    playerScore++;
+    playerScore += 10;
     score.textContent = playerScore;
     placeFood();
   }
