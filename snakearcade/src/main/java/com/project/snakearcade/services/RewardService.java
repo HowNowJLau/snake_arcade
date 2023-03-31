@@ -28,10 +28,10 @@ public class RewardService {
 		return optionalReward.isPresent() ? optionalReward.get() : null;
 	}
 	
-	public Reward create(Long userId, Long archivedRewardId) {
+	public Reward create(Long userId, Long archivedRewardId, Boolean isEnabled) {
 		User thisUser = userServ.getOne(userId);
 		ArchivedReward thisArchivedReward = archivedRewardServ.getOne(archivedRewardId);
-		Reward rewardToSave = new Reward(thisUser, thisArchivedReward);
+		Reward rewardToSave = new Reward(thisUser, thisArchivedReward, isEnabled);
 		return rewardRepo.save(rewardToSave);
 	}
 	

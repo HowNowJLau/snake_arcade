@@ -18,9 +18,9 @@
 		  <nav class="game-nav">
 		  <ul>
 		  <li>
-		    <img class="avatar" src="/png/defaultpic.png" alt="avatar">
-		    <br>
-            <a href="arcade/rewards/collection">View My Avatars!</a>
+		    <img class="avatar" src="${avatar.hyperlink}" alt="avatar">
+		    <p>Tickets: ${loggedUser.tickets}</p>
+            <a href="arcade/rewards/collection" class="view-avatar">View My Avatars!</a>
             </li></ul>
           </nav>
 		</div>

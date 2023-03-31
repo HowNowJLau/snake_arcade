@@ -52,9 +52,10 @@ public class Reward {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reward(User user, ArchivedReward archivedReward) {
+	public Reward(User user, ArchivedReward archivedReward, Boolean isEnabled) {
 		this.user = user;
 		this.archivedReward = archivedReward;
+		this.isEnabled = isEnabled;
 	}
 	
 	public Long getId() {
@@ -99,7 +100,6 @@ public class Reward {
 
 	@PrePersist
 	protected void onCreate() {
-		this.isEnabled = false;
 		this.createdAt = new Date();
 	}
 	@PreUpdate

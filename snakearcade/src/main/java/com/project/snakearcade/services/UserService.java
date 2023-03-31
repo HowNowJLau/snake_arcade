@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import com.project.snakearcade.models.LoginUser;
+import com.project.snakearcade.models.Reward;
 import com.project.snakearcade.models.User;
 import com.project.snakearcade.repositories.UserRepository;
 
@@ -48,6 +49,7 @@ public class UserService {
     	// TO-DO - Reject values or register if no errors:
 
         // Reject if username is taken (present in database)
+		
 		if (userRepo.findByUserName(newUser.getUserName()).isPresent()) {
 			result.rejectValue("email", "Unique", "A user has already been created with this email");
 		}
@@ -62,6 +64,7 @@ public class UserService {
         // Hash and set password, save user to database
         String hashed = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
 		newUser.setPassword(hashed);
+		System.out.println("registering user");
 		return userRepo.save(newUser);
     }
 	
